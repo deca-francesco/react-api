@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import articlesArray from './data/articles.js';
 import ArticleCard from './components/ArticleCard/ArticleCard.jsx';
 import './App.css';
 
 const initialFormData = {
   title: "",
-  image: "",
   content: "",
-  category: "",
+  image: "",
   tags: [],
-  publish: true
 };
+
+
+const api_server = "http://localhost:3001"
+const end_point = "/posts"
+
+
 
 function App() {
   const [articles, setArticles] = useState(articlesArray);
@@ -18,6 +22,28 @@ function App() {
   const [modifyArticle, setModifyArticle] = useState("");
   const [currentIndex, setCurrentIndex] = useState(null);
   const [formData, setFormData] = useState(initialFormData);
+
+  const [postsData, setPostsData] = useState([])
+
+
+  function fetchData(url = `${api_server}${end_point}`) {
+    fetch(url)
+
+      .then(res => res.json())
+
+      .then(data => {
+
+        console.log(data);
+
+        setPostsData(data)
+      }).catch(err => {
+        console.error(err.message);
+      })
+  }
+
+  // esegue subito al caricamento della pagina, ma una volta sola perché non ha dipendenze
+  useEffect(fetchData, [])
+
 
   function handleFormField(e) {
     const { name, value, checked, type } = e.target;
@@ -45,7 +71,7 @@ function App() {
 
   function handleCancelClick(e) {
     const dataIndex = Number(e.target.getAttribute('data-index'));
-    const newArticles = articles.filter((_, index) => index !== dataIndex);
+    const newArticles = postsData.data.filter((post, index) => index !== dataIndex);
     setArticles(newArticles);
   }
 
@@ -64,6 +90,8 @@ function App() {
     setModifyArticle('');
     setCurrentIndex(null);
   }
+
+
 
   return (
     <div className="container">
@@ -107,14 +135,18 @@ function App() {
 
       <section className="list-group mb-5">
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          {articles.map((article, index) => (
-            <ArticleCard key={index} className="list-group-item d-flex justify-content-between align-items-center" data={article}>
+
+
+          {postsData.data ? postsData.data.map((post, index) => (
+            <ArticleCard key={index} className="list-group-item d-flex justify-content-between align-items-center" data={post} api_server={api_server} >
               <div className="buttonsDiv">
                 <button onClick={handleCancelClick} data-index={index} className="ms-3 btn btn-outline-danger">Cancella</button>
                 <button onClick={handleModifyClick} data-index={index} className="ms-3 btn btn-outline-primary">Modifica</button>
               </div>
             </ArticleCard>
-          ))}
+
+
+          )) : <p>No data found</p>}
         </div>
       </section>
 

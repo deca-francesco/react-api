@@ -10,11 +10,12 @@ export default function Form({ formData, handleFormField, handleFormSubmit }) {
 
     function handleCloseForm() {
         form.classList.add("d-none")
+        show_btn.classList.remove("d-none")
     }
 
     return (
         <>
-            <button className="btn btn-primary" id="show-form-btn" onClick={handleShowForm}>Inserisci Articolo</button>
+            <button className="btn btn-primary" id="show-form-btn" onClick={handleShowForm}>Inserisci nuovo articolo</button>
 
             <form onSubmit={handleFormSubmit} className="mt-4 d-none" id="form">
                 <div className="mb-3">
@@ -29,27 +30,46 @@ export default function Form({ formData, handleFormField, handleFormSubmit }) {
                     <label htmlFor="content" className="form-label">Contenuto</label>
                     <textarea className="form-control" name="content" id="content" placeholder="Contenuto" value={formData.content} onChange={handleFormField} />
                 </div>
-                <div className="mb-3">
-                    <label htmlFor="category" className="form-label">Categoria</label>
-                    <select className="form-select" name="category" id="category" value={formData.category} onChange={handleFormField}>
-                        <option defaultValue={true}>Scegli una categoria</option>
-                        <option value="Html">Html</option>
-                        <option value="Js">Js</option>
-                        <option value="Altri linguaggi">Altri linguaggi</option>
-                    </select>
+                <div className="tags d-flex justify-content-between">
+                    <p className="mt-4 mb-3">Tags:</p>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Dolci" checked={formData.tags.includes("Dolci")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="dolci">Dolci</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Torte" checked={formData.tags.includes("Torte")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="torte">Torte</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Dolci al cioccolato" checked={formData.tags.includes("Dolci al cioccolato")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="dolci_al_cioccolato">Dolci al cioccolato</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Ricette vegetariane" checked={formData.tags.includes("Ricette vegetariane")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="ricette_vegetariane">Ricette vegetariane</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Ricette al forno" checked={formData.tags.includes("Ricette al forno")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="ricette_al_forno">Ricette al forno</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Antipasti" checked={formData.tags.includes("Antipasti")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="antipasti">Antipasti</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Primi piatti" checked={formData.tags.includes("Primi piatti")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="primi_piatti">Primi piatti</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Dolci veloci" checked={formData.tags.includes("Dolci veloci")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="dolci_veloci">Dolci veloci</label>
+                    </div>
+                    <div className="form-check mt-4 mb-3">
+                        <input className="form-check-input" type="checkbox" name="tags" value="Ricette veloci" checked={formData.tags.includes("Ricette veloci")} onChange={handleFormField} />
+                        <label className="form-check-label" htmlFor="ricette_veloci">Ricette veloci</label>
+                    </div>
                 </div>
-                <div className="form-check mt-4 mb-3">
-                    <input className="form-check-input" type="checkbox" name="tags" value="Tag 1" checked={formData.tags.includes("Tag 1")} onChange={handleFormField} />
-                    <label className="form-check-label" htmlFor="tag1">Tag 1</label>
-                </div>
-                <div className="form-check">
-                    <input className="form-check-input" type="checkbox" name="tags" value="Tag 2" checked={formData.tags.includes("Tag 2")} onChange={handleFormField} />
-                    <label className="form-check-label" htmlFor="tag2">Tag 2</label>
-                </div>
-                <div className="form-check mt-5">
-                    <input className="form-check-input" type="checkbox" name="publish" checked={formData.publish} onChange={handleFormField} />
-                    <label className="form-check-label" htmlFor="publish">Pubblica</label>
-                </div>
+
                 <button className="btn btn-success mt-3" type="submit">Inserisci</button>
                 <button className="btn btn-secondary mt-3 ms-2" onClick={handleCloseForm}>Chiudi</button>
             </form>

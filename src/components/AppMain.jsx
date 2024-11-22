@@ -46,7 +46,6 @@ export default function AppMain() {
     useEffect(fetchData, [])
 
 
-
     // function addArticle(e) {
 
     //   e.preventDefault()

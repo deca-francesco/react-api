@@ -1,12 +1,7 @@
 
 
-export default function ArticleCard({ data, index, children, api_server }) {
+export default function ArticleCard({ data, index, handleDeleteClick, api_server, children }) {
 
-    function handleCancelClick(e) {
-        const dataIndex = Number(e.target.getAttribute('data-index'));
-        const newArticles = postsData.data.filter((post, index) => index !== dataIndex);
-        setArticles(newArticles);
-    }
 
     function handleModifyClick(e) {
         const dataIndex = Number(e.target.getAttribute('data-index'));
@@ -14,16 +9,18 @@ export default function ArticleCard({ data, index, children, api_server }) {
         setModifyArticle(articles[dataIndex]);
     }
 
+
+
     return (
         <div className="col">
-            <div className="card mb-5">
+            <div className="card mb-5 card_custom">
                 <img src={api_server + data.image} className="object-fit-cover card-img-top" height={350} />
-                <div className="card-body">
+                <div className="card-body card_bottom">
                     <h3>{data.title}</h3>
                     <p>{data.content}</p>
                     <p>Tags: {data.tags.join(", ")}</p>
-                    <div className="buttonsDiv d-flex justify-content-end">
-                        <button onClick={handleCancelClick} data-index={index} className="btn btn-outline-danger">Cancella</button>
+                    <div className="buttons_div d-flex justify-content-end">
+                        <button onClick={handleDeleteClick} data-index={index} data-slug={data.slug} className="btn btn-outline-danger">Cancella</button>
                         <button onClick={handleModifyClick} data-index={index} className="ms-3 btn btn-outline-primary">Modifica</button>
                     </div>
                     {children}

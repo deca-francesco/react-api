@@ -19,7 +19,7 @@ export default function Form({ formData, handleFormField, handleFormSubmit }) {
 
             <form onSubmit={handleFormSubmit} className="mt-4 d-none" id="form">
                 <div className="mb-3">
-                    <label htmlFor="title" className="form-label">Titolo del nuovo articolo</label>
+                    <label htmlFor="title" className="form-label" required >Titolo del nuovo articolo</label>
                     <input type="text" className="form-control" name="title" id="title" placeholder="Nuovo titolo" value={formData.title} onChange={handleFormField} />
                 </div>
                 <div className="mb-3">

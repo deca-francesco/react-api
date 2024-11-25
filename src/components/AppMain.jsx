@@ -3,14 +3,15 @@ import { useState, useEffect } from 'react';
 import ArticleCard from './ArticleCard.jsx';
 import ArticleList from './ArticleList.jsx';
 import Form from './Form.jsx';
+import SearcBar from './Searchbar.jsx';
 
 
 export default function AppMain() {
 
     const initialFormData = {
         title: "",
-        content: "",
         image: "",
+        content: "",
         tags: [],
     };
 
@@ -46,22 +47,12 @@ export default function AppMain() {
     useEffect(fetchData, [])
 
 
-    // function addArticle(e) {
-
-    //   e.preventDefault()
-
-    //   const newArticles = [...articles, newArticle]
-
-    //   setArticles(newArticles)
-
-    //   setNewArticle("")
-
-    //   console.log(newArticles);
-
-    // }
-
     function handleFormField(e) {
         const { name, value, checked, type } = e.target;
+
+        if (name === "slug") {
+            formData.slug = formData.title.toLowerCase()
+        }
 
         const newValue = type === 'checkbox' ? checked : value;
 
@@ -80,22 +71,52 @@ export default function AppMain() {
 
     function handleFormSubmit(e) {
         e.preventDefault();
-        const newItem = { id: Date.now(), ...formData };
-        setArticles([newItem, ...articles]);
+
+        console.log(e.target);
+
+
+        const newItem = {
+            slug: formData.title.toLowercase().split(" ").join("-"),
+            ...formData
+        }
+
+        fetch(api_server + end_point, {
+            method: 'POST',
+            body: JSON.stringify(newItem),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log("result", result);
+                setPostsData(result.data)
+            })
         setFormData(initialFormData);
     }
 
-    function handleSaveClick(e) {
-        e.preventDefault();
-        const newArticles = articles.map((article, index) =>
-            index === currentIndex ? modifyArticle : article
-        );
-        setArticles(newArticles);
-        setModifyArticle('');
-        setCurrentIndex(null);
+    function handleDeleteClick(e) {
+        e.preventDefault()
+
+        const slug = e.target.getAttribute("data.slug")
+
+        console.log(slug);
+
+        fetch(api_server + end_point + slug, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(result => {
+                console.log("result", result);
+                setPostsData(result.data)
+            })
+
+
+
     }
-
-
 
 
     return (
@@ -103,9 +124,11 @@ export default function AppMain() {
             <div className="container">
                 <Form formData={formData} handleFormField={handleFormField} handleFormSubmit={handleFormSubmit} />
 
+                <SearcBar fetchData={fetchData} postsData={postsData} setPostsData={setPostsData} />
+
                 <ArticleList>
                     {postsData.data ? postsData.data.map((post, index) => (
-                        <ArticleCard key={index} data={post} index={index} api_server={api_server} >
+                        <ArticleCard key={index} data={post} index={index} api_server={api_server} handleDeleteClick={handleDeleteClick} >
                         </ArticleCard>
                     )) : <p>No data found</p>
                     }

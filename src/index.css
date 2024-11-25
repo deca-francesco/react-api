@@ -1,0 +1,10 @@
+.card_custom {
+    min-height: 800px;
+    position: relative;
+
+    .buttons_div {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+    }
+}
